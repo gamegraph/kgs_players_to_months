@@ -14,7 +14,7 @@ module KgsPlayersToMonths
           qs.enq_months Parser.new(player_page).month_urls
         end
       end
-      sleep 30
+      sleep rand (30..60)
     end
   end
 
