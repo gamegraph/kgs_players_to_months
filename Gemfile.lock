@@ -1,19 +1,41 @@
+GIT
+  remote: git://github.com/gamegraph/ar_gagra.git
+  revision: 589d457570b80b929dc902b7c47d9fe9454aadf9
+  specs:
+    ar_gagra (0.0.1)
+      activerecord
+      activerecord-import
+      pg
+
 GEM
   remote: https://rubygems.org/
   specs:
-    aws-sdk (1.11.1)
-      json (~> 1.4)
-      nokogiri (>= 1.4.4)
-      uuidtools (~> 2.1)
+    activemodel (3.2.13)
+      activesupport (= 3.2.13)
+      builder (~> 3.0.0)
+    activerecord (3.2.13)
+      activemodel (= 3.2.13)
+      activesupport (= 3.2.13)
+      arel (~> 3.0.2)
+      tzinfo (~> 0.3.29)
+    activerecord-import (0.3.1)
+      activerecord (~> 3.0)
+      activerecord (~> 3.0)
+    activesupport (3.2.13)
+      i18n (= 0.6.1)
+      multi_json (~> 1.0)
+    arel (3.0.2)
+    builder (3.0.4)
     coderay (1.0.9)
     diff-lcs (1.2.4)
     dotenv (0.8.0)
     foreman (0.63.0)
       dotenv (>= 0.7)
       thor (>= 0.13.6)
-    json (1.8.0)
+    i18n (0.6.1)
     method_source (0.8.1)
     mini_portile (0.5.0)
+    multi_json (1.7.7)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
     pg (0.15.1)
@@ -31,15 +53,14 @@ GEM
     rspec-mocks (2.13.1)
     slop (3.4.5)
     thor (0.18.1)
-    uuidtools (2.1.4)
+    tzinfo (0.3.37)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  aws-sdk
+  ar_gagra!
   foreman
   nokogiri
-  pg
   pry
   rspec

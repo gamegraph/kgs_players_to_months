@@ -1,7 +1,6 @@
+Bundler.require
 require 'net/http'
 require 'uri'
-require_relative 'cache'
-require_relative 'msg_queues'
 require_relative 'parser'
 
 module KgsPlayersToMonths
@@ -9,15 +8,15 @@ module KgsPlayersToMonths
 
   class Main
     def initialize
-      @cache = Cache.new
-      @qs = MsgQueues.new
+      ArGagra.connect
     end
 
     def run
       while true do
         request_sent = false
-        @qs.deq_kpq do |msg|
-          request_sent = process_kpq_msg msg.body
+        kun = KgsUsername.where(requested: false).first
+        if kun.present?
+          request_sent = process_un(kun)
         end
         if request_sent
           sleep rand (30..60)
@@ -27,28 +26,29 @@ module KgsPlayersToMonths
 
     private
 
+    def insert_month_urls urls
+      known = KgsMonthUrl.where('url in (?)', urls).to_a.map(&:url)
+      discovered = (Set.new(urls) - known).to_a
+      puts sprintf "discovered: %d urls", discovered.length
+      KgsMonthUrl.import_valid(discovered)
+    end
+
     def player_uri username
       URI(ARCHIVES_JSP + "?oldAccounts=y&user=" + username.to_s)
     end
 
-    def process_kpq_msg username
+    def process_un kun
+      username = kun.un
       puts "player: #{username}"
       if !username?(username)
         puts "skip: invalid"
         false
-      elsif recent?(username)
-        puts "skip: recent"
-        false
       else
         player_page = Net::HTTP.get player_uri(username)
-        @qs.enq_months Parser.new(player_page).month_urls
-        @cache << username
+        insert_month_urls Parser.new(player_page).month_urls
+        kun.update_attributes!(requested: true)
         true
       end
-    end
-
-    def recent? username
-      @cache.hit? username
     end
 
     def username? str

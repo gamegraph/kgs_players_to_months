@@ -1,9 +1,8 @@
 ruby '1.9.3'
 source 'https://rubygems.org'
 
-gem 'aws-sdk'
+gem 'ar_gagra', :github => 'gamegraph/ar_gagra'
 gem 'foreman'
-gem 'pg'
 gem 'nokogiri'
 
 group :test do
